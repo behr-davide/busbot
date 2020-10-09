@@ -1,7 +1,8 @@
 import os
+import aiocron
 import logging 
 from arrr import translate
-from discord import commands
+from discord.ext import commands
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -11,7 +12,7 @@ MAIN_CHANNEL = 372152246156263425
 
 
 bot = commands.Bot(command_prefix='!')
-logging.basicConfig(filename='busbot.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='busbot.log', level=logging.DEBUG)
 
 
 def get_weekday():
@@ -25,6 +26,7 @@ def build_greeting():
 
 @bot.event
 async def on_ready():
+    logging.info("-" * 10)
     logging.info("Logged in to server as...")
     logging.info(bot.user.name)
     logging.info(bot.user.id)
@@ -37,7 +39,12 @@ async def day(ctx):
     await ctx.send(greeting)
 
 
-@aiocron.crontab("0 10 * * *")
+@bot.command()
+async def pirate(ctx, message):
+    await ctx.send(translate(message))
+
+
+@aiocron.crontab("* * * * *")
 async def scheduled_greeting():
     channel = bot.get_channel(MAIN_CHANNEL)
     greeting = build_greeting()

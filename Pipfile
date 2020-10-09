@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 arrr = "*"
 python-dotenv = "*"
+"discord.py" = "*"
+emoji = "*"
 
 [requires]
 python_version = "3.8"

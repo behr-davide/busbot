@@ -9,7 +9,7 @@ verify_ssl = true
 arrr = "*"
 python-dotenv = "*"
 "discord.py" = "*"
-emoji = "*"
+aiocron = "*"
 
 [requires]
 python_version = "3.8"

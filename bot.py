@@ -1,6 +1,8 @@
 import os
+import discord
 import aiocron
 import logging 
+from random import choice
 from arrr import translate
 from discord.ext import commands
 from datetime import datetime
@@ -8,11 +10,11 @@ from dotenv import load_dotenv
 
 
 TOKEN = os.getenv("DISCORD_TOKEN")
-MAIN_CHANNEL = 372152246156263425
+MAIN_CHANNEL = 321102946052079616
 
 
 bot = commands.Bot(command_prefix='!')
-logging.basicConfig(filename='busbot.log', level=logging.DEBUG)
+logging.basicConfig(filename='busbot.log', level=logging.INFO)
 
 
 def get_weekday():
@@ -22,6 +24,13 @@ def get_weekday():
 def build_greeting():
     english_greeting = f"Hello sailors, today it is {get_weekday()}"
     return f":pirate_flag: :bus: {translate(english_greeting)}"
+
+
+def choose_cat_pic():
+    cache = []
+    catters_path = "/mnt/c/Users/david/Documents/catters"
+    cat_pics = os.listdir(catters_path)
+    return f"{catters_path}/{choice(cat_pics)}"
 
 
 @bot.event
@@ -44,9 +53,13 @@ async def pirate(ctx, message):
     await ctx.send(translate(message))
 
 
-@aiocron.crontab("* * * * *")
+@bot.command()
+async def catters(ctx):
+    await ctx.send(file=discord.File(choose_cat_pic()))
+
+
+@aiocron.crontab("0 10,22 * * *")
 async def scheduled_greeting():
-    await client.wait_until_ready()
     channel = bot.get_channel(MAIN_CHANNEL)
     greeting = build_greeting()
     await channel.send(greeting)

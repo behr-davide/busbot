@@ -46,6 +46,7 @@ async def pirate(ctx, message):
 
 @aiocron.crontab("* * * * *")
 async def scheduled_greeting():
+    await client.wait_until_ready()
     channel = bot.get_channel(MAIN_CHANNEL)
     greeting = build_greeting()
     await channel.send(greeting)

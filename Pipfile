@@ -10,6 +10,7 @@ arrr = "*"
 python-dotenv = "*"
 "discord.py" = "*"
 aiocron = "*"
+pynacl = "*"
 
 [requires]
 python_version = "3.8"

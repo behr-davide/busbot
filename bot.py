@@ -10,10 +10,10 @@ from dotenv import load_dotenv
 
 
 TOKEN = os.getenv("DISCORD_TOKEN")
-MAIN_CHANNEL = 321102946052079616
+MAIN_CHANNEL = 372152246156263425
 
 
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='?')
 logging.basicConfig(filename='busbot.log', level=logging.INFO)
 
 
@@ -23,12 +23,11 @@ def get_weekday():
 
 def build_greeting():
     english_greeting = f"Hello sailors, today it is {get_weekday()}"
-    return f":pirate_flag: :bus: {translate(english_greeting)}"
+    return f":pirate_flag: :bus: {translate(english_greeting)}!"
 
 
 def choose_cat_pic():
-    cache = []
-    catters_path = "/mnt/c/Users/david/Documents/catters"
+    catters_path = "assets"
     cat_pics = os.listdir(catters_path)
     return f"{catters_path}/{choice(cat_pics)}"
 

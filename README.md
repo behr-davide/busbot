@@ -7,7 +7,7 @@ Command | Description
 ?help | Display the help msg, including a list of available commands
 ?day | Print the fridaysailer-ified day of the week msg to the current channel
 ?catters | Send a random :cat: pic
-?pirate "~message~" | Translate ~message~ into pirate english using Arrr.py
+?pirate "*message*" | Translate *message* into pirate english using Arrr.py
 
 ## Setup
 1. Install Python >= 3.6

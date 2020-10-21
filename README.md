@@ -1,6 +1,13 @@
 # busbot
-Ahoy sailors...
+Ahoy sailors... busbot is a discord bot that announces the day of the week to a discord channel in the spirit of [fridaysailer](https://twitter.com/fridaysailer) among other things. Busbot uses `aiocron` to schedule day announcements.
 
+## Commands
+Command | Description
+------------ | -------------
+?help | Display the help msg, including a list of available commands
+?day | Print the fridaysailer-ified day of the week msg to the current channel
+?catters | Send a random :cat: pic
+?pirate "<message>" | Translate <message> into pirate english using Arrr.py
 
 ## Setup
 1. Install Python >= 3.6

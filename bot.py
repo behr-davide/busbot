@@ -3,7 +3,7 @@ import discord
 import aiocron
 import logging 
 from random import choice
-from arrr import translate
+from arrr import translate, _PIRATE_PHRASES
 from discord.ext import commands
 from datetime import datetime
 from dotenv import load_dotenv
@@ -23,7 +23,7 @@ def get_weekday():
 
 def build_greeting():
     english_greeting = f"Hello sailors, today it is {get_weekday()}"
-    return f":pirate_flag: :bus: {translate(english_greeting)}!"
+    return f":pirate_flag: :bus: {choice(_PIRATE_PHRASES)} {translate(english_greeting)}!"
 
 
 def choose_cat_pic():
@@ -57,7 +57,7 @@ async def catters(ctx):
     await ctx.send(file=discord.File(choose_cat_pic()))
 
 
-@aiocron.crontab("0 10,22 * * *")
+@aiocron.crontab("0 10 * * *")
 async def scheduled_greeting():
     channel = bot.get_channel(MAIN_CHANNEL)
     greeting = build_greeting()

@@ -7,6 +7,7 @@ from arrr import translate, _PIRATE_PHRASES
 from discord.ext import commands
 from datetime import datetime
 from dotenv import load_dotenv
+from functools import lru_cache
 
 
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -30,6 +31,12 @@ def choose_cat_pic():
     catters_path = "assets"
     cat_pics = os.listdir(catters_path)
     return f"{catters_path}/{choice(cat_pics)}"
+
+
+@lru_cache(maxsize=None)
+def get_guild_members(ctx):
+    uroh_role = "URoH"
+    return [member for member in ctx.guild.members if uroh_role in member.roles]
 
 
 @bot.event
@@ -62,6 +69,13 @@ async def scheduled_greeting():
     channel = bot.get_channel(MAIN_CHANNEL)
     greeting = build_greeting()
     await channel.send(greeting)
+
+
+@aiocron.crontab("0 12 * * *")
+async def scheduled_member_of_the_day(ctx):
+    channel = bot.get_channel(MAIN_CHANNEL)
+    member = choice(get_guild_members(ctx))
+    await channel.send(f"{member.display_name} is the URoH member of the day!")
 
 
 bot.run(TOKEN)

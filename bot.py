@@ -34,9 +34,9 @@ def choose_cat_pic():
 
 
 @lru_cache(maxsize=None)
-def get_guild_members(ctx):
+def get_guild_members():
     uroh_role = "URoH"
-    return [member for member in ctx.guild.members if uroh_role in member.roles]
+    return [member for member in bot.get_all_members() if uroh_role in member.roles]
 
 
 @bot.event
@@ -71,10 +71,10 @@ async def scheduled_greeting():
     await channel.send(greeting)
 
 
-@aiocron.crontab("0 12 * * *")
-async def scheduled_member_of_the_day(ctx):
+@aiocron.crontab("31 12 * * *")
+async def scheduled_member_of_the_day():
     channel = bot.get_channel(MAIN_CHANNEL)
-    member = choice(get_guild_members(ctx))
+    member = choice(get_guild_members())
     await channel.send(f"{member.display_name} is the URoH member of the day!")
 
 

@@ -88,7 +88,7 @@ async def scheduled_greeting():
     await channel.send(greeting)
 
 
-@aiocron.crontab("27 16 * * *")
+@aiocron.crontab("0 11 * * *")
 async def scheduled_member_of_the_day():
     channel = bot.get_channel(MAIN_CHANNEL)
     members = bot.get_all_members()

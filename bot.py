@@ -96,7 +96,7 @@ async def scheduled_member_of_the_day():
     member = choice(uroh_members)
     embed = discord.Embed()
     embed.set_image(url=member.avatar_url)
-    await channel.send(content=f"{member.display_name} is the URoH member of the day!", embed=embed)
+    await channel.send(content=f"{member.mention} is the URoH member of the day!", embed=embed)
 
 
 bot.run(TOKEN)

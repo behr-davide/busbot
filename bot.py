@@ -8,13 +8,14 @@ from discord.ext import commands
 from datetime import datetime
 from dotenv import load_dotenv
 from functools import lru_cache
-
+load_dotenv()
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 MAIN_CHANNEL = 372152246156263425
 
-
-bot = commands.Bot(command_prefix='?')
+intents = discord.Intents.default()
+intents.members = True
+bot = commands.Bot(command_prefix='?', intents=intents)
 logging.basicConfig(filename='busbot.log', level=logging.INFO)
 
 
@@ -33,10 +34,26 @@ def choose_cat_pic():
     return f"{catters_path}/{choice(cat_pics)}"
 
 
-@lru_cache(maxsize=None)
-def get_guild_members():
-    uroh_role = "URoH"
-    return [member for member in bot.get_all_members() if uroh_role in member.roles]
+def get_members_by_role(members, role_name):
+    role_members = []
+    for member in members:
+        for role in member.roles:
+            if role.name.lower() == role_name.lower():
+                role_members.append(member)
+    return role_members
+
+
+@bot.command()
+async def members(ctx, role):
+    members = get_members_by_role(ctx, role)
+    await ctx.send(members)
+
+
+@bot.command(name="randommember")
+async def random_member(ctx):
+    uroh_members = get_members_by_role(ctx.guild.members, "uroh")
+    chosen_member = choice(uroh_members)
+    await ctx.send(chosen_member.display_name)
 
 
 @bot.event
@@ -71,11 +88,15 @@ async def scheduled_greeting():
     await channel.send(greeting)
 
 
-@aiocron.crontab("40 12 * * *")
+@aiocron.crontab("27 16 * * *")
 async def scheduled_member_of_the_day():
     channel = bot.get_channel(MAIN_CHANNEL)
-    member = choice(get_guild_members())
-    await channel.send(f"{member.display_name} is the URoH member of the day!")
+    members = bot.get_all_members()
+    uroh_members = get_members_by_role(members, "uroh")
+    member = choice(uroh_members)
+    embed = discord.Embed()
+    embed.set_image(url=member.avatar_url)
+    await channel.send(content=f"{member.display_name} is the URoH member of the day!", embed=embed)
 
 
 bot.run(TOKEN)

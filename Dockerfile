@@ -4,6 +4,6 @@ RUN apk add build-base libffi-dev tzdata && pip install pipenv
 COPY . /app
 WORKDIR /app
 ENV TZ=America/New_York
-RUN pipenv install --deploy --ignore-pipfile
+RUN python3 -m pip install -r requirements.txt
 
-ENTRYPOINT [ "pipenv", "run", "python", "bot.py" ]
+ENTRYPOINT [ "python3", "bot.py" ]
